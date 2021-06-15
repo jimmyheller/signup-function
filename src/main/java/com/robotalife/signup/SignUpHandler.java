@@ -60,7 +60,6 @@ public class SignUpHandler implements RequestHandler<SignUpRequest, APIGatewayPr
                 user, context);
         //return response
         response.setStatusCode(201); //created
-        response.setBody(new Gson().toJson(user));
         return response;
     }
 
