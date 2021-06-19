@@ -3,11 +3,10 @@ package com.robotalife.signup;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.google.gson.Gson;
 import com.robotalife.signup.model.SignUpRequest;
 import com.robotalife.signup.model.SignupException;
 import com.robotalife.signup.model.User;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
@@ -136,8 +135,9 @@ public class SignUpHandler implements RequestHandler<SignUpRequest, APIGatewayPr
         String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(password);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (matcher.matches()) {
-            return BCrypt.hashpw(password, BCrypt.gensalt());
+            return bCryptPasswordEncoder.encode(password);
         }
         throw new SignupException("[BadRequest] password is not strong enough");
 

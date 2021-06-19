@@ -13,7 +13,7 @@ aws dynamodb create-table \
          }
       ],
       "Projection":{
-         "ProjectionType":"KEYS_ONLY"
+         "ProjectionType":"ALL"
       }
    }
 ]' \
